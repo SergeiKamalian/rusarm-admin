@@ -8,7 +8,7 @@ export const StyledInput = styled.input`
     border-radius: 15px;
     height: 40px;
     color: white;
-    padding-left: 16px;
+    padding:0 16px;
     ::placeholder {
         color: #5F5F5F;
     }

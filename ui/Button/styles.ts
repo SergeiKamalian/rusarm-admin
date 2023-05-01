@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-export const StyledButton = styled.button<{ theme: 'primary' | 'secondary' }>`
+export const StyledButton = styled.button<{ theme: 'primary' | 'secondary', size: 'large' | 'medium' | 'small' }>`
     border: none;
     outline: none;
     background: ${props => props.theme === 'primary' ? '#1DAEFF'
@@ -16,7 +16,29 @@ export const StyledButton = styled.button<{ theme: 'primary' | 'secondary' }>`
 
     opacity: 0.8;
     transition: all .5s;
-
+    height: ${props => props.size === 'medium' ? '40px' : '30px'};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    :hover {
+        opacity: 1;
+    }
+`
+export const StyledCircleButton = styled.button<{theme: 'edit' | 'delete' | 'add'}>`
+    border: none;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    background:${props => props.theme === 'delete' ? '#DD5E5E' : (props.theme === 'edit' ? '#1DAEFF' : '#09b50b')};
+    /* #DD5E5E */
+    /* #1DAEFF */
+    border-radius: 50%;
+    opacity: 0.8;
+    transition: all .5s;
+    cursor: pointer;
     :hover {
         opacity: 1;
     }

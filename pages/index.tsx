@@ -10,6 +10,10 @@ export default function Home() {
     const isAuth = localStorage.getItem('isAuth');
     if (isAuth !== 'true') router.push('/auth')
   }, [])
+  const { getRoutes } = useRoute()
+  useEffect(() => {
+    getRoutes()
+  }, [])
   return (
     <>
       <Head>

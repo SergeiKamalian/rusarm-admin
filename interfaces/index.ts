@@ -1,3 +1,6 @@
+import { TABS } from "@/enums"
+import { ReactNode } from "react"
+
 export interface ILanguage {
     id: number,
     value: LOCAL_LANGUAGES
@@ -28,13 +31,24 @@ export interface ICity {
 export interface IRoute {
     city_from: string
     city_to: string
-    id: string
-    duration: number
-    price_amd: number
-    price_rub: number
+    id?: string
+    duration: string
+    price_amd: string
+    price_rub: string
     search_keys: string
     image: string
     days: string[]
     name: string
-    distance: number
+    distance: string
+}
+export interface IMenuListItem {
+    tab: TABS
+    key: number
+    title: string
+    icon: ReactNode
+}
+export interface IDay {
+    id: number,
+    value: string,
+    key: string
 }

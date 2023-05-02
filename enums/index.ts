@@ -5,5 +5,6 @@ export enum VALIDATION_ERRORS {
 export enum TABS {
     ROUTES = 'routes',
     LOCALS = 'locals',
-    NUMBERS = 'contacts'
+    NUMBERS = 'contacts',
+    META_DATAS = 'meta-datas'
 }

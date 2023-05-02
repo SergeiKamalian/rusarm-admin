@@ -5,16 +5,22 @@ import Button from '@/ui/Button/Button'
 import { HiOutlineDocumentAdd } from 'react-icons/hi'
 import Modal from '@/ui/Modal/Modal'
 import CreateAndEditRoute from '../CreateAndEditRoute/CreateAndEditRoute'
+import { useRoute } from '@/hooks/useRoute'
 
 const Routes = () => {
     const [addModalIsOpen, setAddModalIsOpen] = useState(false)
+    const { routes } = useRoute()
     return (
         <>
-            <Modal
-                isOpen={addModalIsOpen}
-                closeHandler={() => setAddModalIsOpen(false)}
-                body={<CreateAndEditRoute closeHandler={() => setAddModalIsOpen(false)} />}
-            />
+            {
+                addModalIsOpen
+                    ? <Modal
+                        title='Создать маршрут'
+                        isOpen={addModalIsOpen}
+                        closeHandler={() => setAddModalIsOpen(false)}
+                        body={<CreateAndEditRoute closeHandler={() => setAddModalIsOpen(false)} />}
+                    /> : null
+            }
 
             <StyledRoutes>
                 <StyledTitles>
@@ -34,9 +40,9 @@ const Routes = () => {
                     />
                 </StyledTitles>
                 <StyledRouteList>
-                    {/* <RouteItem />
-                <RouteItem /> */}
-                    <RouteItem />
+                    {
+                        routes.map((route, index) => <RouteItem key={route.name} backgroundIsLight={index % 2 === 0} route={route} />)
+                    }
                 </StyledRouteList>
             </StyledRoutes>
         </>

@@ -1,24 +1,32 @@
 import { useCallback } from "react"
-import { getFirestore, getDocs, collection, doc, updateDoc, addDoc } from 'firebase/firestore'
+import { getFirestore, getDocs, collection, doc, updateDoc, addDoc, deleteDoc } from 'firebase/firestore'
 import { firebaseApp } from "@/firebase-config"
 import { getAuth, signInWithPhoneNumber, RecaptchaVerifier } from 'firebase/auth'
 
 export function useFirebase() {
+    const database = getFirestore(firebaseApp)
 
     const getData = useCallback(async (collectionName: string) => {
-        const database = getFirestore(firebaseApp)
         const collectionRef = collection(database, collectionName)
         const dataDetails = await getDocs(collectionRef)
         return dataDetails.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    }, [])
+    }, [database])
+
     const addData = useCallback(async (collectionName: string, data: unknown) => {
-        const database = getFirestore(firebaseApp)
         const collectionRef = collection(database, collectionName)
         addDoc(collectionRef, data)
-        .then(() => {
-            console.log('added')
-        })
-    }, [])
+    }, [database])
+
+    const deleteData = useCallback(async (collectionName: string, docId: string) => {
+        const docRef = doc(database, collectionName, docId)
+        deleteDoc(docRef)
+    }, [database])
+
+    const updateData = useCallback(async (collectionName: string, docId: string, updatedData: unknown) => {
+        const docRef = doc(database, collectionName, docId)
+        //@ts-ignore
+        updateDoc(docRef, updatedData)
+    }, [database])
 
     const auth = getAuth(firebaseApp);
 
@@ -36,6 +44,8 @@ export function useFirebase() {
         getData,
         addData,
         checkCode,
+        deleteData,
+        updateData,
         auth,
         // onSignInSubmit
     }

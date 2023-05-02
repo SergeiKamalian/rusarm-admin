@@ -14,8 +14,8 @@ const MenuList: FC<MenuListProps> = ({
     const handleClick = useCallback((tab: TABS) => {
         router.push(
             {
-                pathname: `/`,
-                query: { tab: tab },
+                pathname: `/${tab}`,
+                // query: { tab: tab },
             },
             undefined,
             {
@@ -27,7 +27,7 @@ const MenuList: FC<MenuListProps> = ({
 
     return (
         <StyledMenuList>
-            {list.map((item) => <StyledMenuItem active={router.query.tab === item.tab} key={item.key} onClick={() => handleClick(item.tab)}>{item.icon} {item.title}</StyledMenuItem>)}
+            {list.map((item) => <StyledMenuItem active={router.asPath.substring(1) === item.tab} key={item.key} onClick={() => handleClick(item.tab)}>{item.icon} {item.title}</StyledMenuItem>)}
         </StyledMenuList>
     )
 }

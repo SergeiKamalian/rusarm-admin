@@ -20,6 +20,7 @@ export const StyledButton = styled.button<{ theme: 'primary' | 'secondary', size
     display: flex;
     justify-content: center;
     align-items: center;
+    width: fit-content;
     :hover {
         opacity: 1;
     }

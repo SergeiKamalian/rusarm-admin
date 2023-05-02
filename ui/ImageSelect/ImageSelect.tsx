@@ -16,15 +16,15 @@ import { storage } from '../../firebase-config'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 interface ImageSelectProps {
     // handleChangeValue: (key: string, value: string | string[]) => void
+    defaultUrl: string
     onChange?: (imageUrl: string) => void
 }
-const ImageSelect: FC<ImageSelectProps> = ({ onChange }) => {
+const ImageSelect: FC<ImageSelectProps> = ({ onChange, defaultUrl }) => {
     const fileSelectRef = useRef<HTMLInputElement>(null);
     const [image, setImage] = useState<File | null>(null);
 
     const uploadImage = useCallback(() => {
         if (fileSelectRef.current?.files?.length && onChange) {
-            console.log('зашел')
             const file = fileSelectRef.current.files[0];
             setImage(file);
             const imageRef = ref(storage, `${file.name}${Math.random()}`)
@@ -33,6 +33,7 @@ const ImageSelect: FC<ImageSelectProps> = ({ onChange }) => {
                     onChange(url)
                 })
             })
+            setImage(null)
         }
     }, [onChange]);
 
@@ -46,7 +47,7 @@ const ImageSelect: FC<ImageSelectProps> = ({ onChange }) => {
             <StyledAddButton onClick={() => fileSelectRef.current?.click()}>
                 <BiImageAdd color='white' />
             </StyledAddButton>
-            <StyledImage src={image ? URL.createObjectURL(image) : ''} />
+            <StyledImage src={defaultUrl ? defaultUrl : ''} />
         </StyledImageSelect>
     )
 }

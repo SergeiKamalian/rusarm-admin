@@ -6,7 +6,7 @@ import Head from 'next/head'
 import { Provider } from 'react-redux'
 import { ThemeProvider, createGlobalStyle } from 'styled-components'
 import { ReactNotifications } from 'react-notifications-component';
-
+import Layout from '@/components/Layout/Layout'
 
 export default function App({ Component, pageProps }: AppProps) {
 
@@ -21,18 +21,11 @@ export default function App({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={theme}>
         <Provider store={store}>
           <ReactNotifications />
-          {/* <Layout> */}
+          <Layout>
             <Component {...pageProps} />
-          {/* </Layout> */}
+          </Layout>
         </Provider>
       </ThemeProvider>
     </>
   )
 }
-
-const GlobalStyle = createGlobalStyle`
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-  font-family: 'Noto Sans Armenian', 'Montserrat';
-`

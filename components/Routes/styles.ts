@@ -33,10 +33,11 @@ export const StyledRouteList = styled.div`
     flex-direction: column;
     margin-top: 10px;
 `
-export const StyledRouteItem = styled.div`
+export const StyledRouteItem = styled.div<{backgroundIsLight: boolean}>`
     width: 100%;
     height: 40px;
-    background: #0E0E0E;
+    background: ${props => props.backgroundIsLight ? '#0E0E0E' : 'rgb(82 82 82 / 10%)'};
+    /* background: #0E0E0E; */
     color: white;
     font-size: 15px;
     display: flex;

@@ -37,7 +37,7 @@ export interface IRoute {
     price_rub: string
     search_keys: string
     image: string
-    days: string[]
+    // days: string[]
     name: string
     distance: string
 }

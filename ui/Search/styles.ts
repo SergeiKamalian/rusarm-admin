@@ -10,6 +10,7 @@ export const StyledSearch = styled.div`
     align-items: center;
     justify-content: space-between;
     padding: 0 16px;
+    min-height: 40px;
 `
 export const StyledInput = styled.input`
     height: 100%;

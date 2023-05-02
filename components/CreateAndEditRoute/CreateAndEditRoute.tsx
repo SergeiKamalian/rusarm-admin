@@ -4,23 +4,23 @@ import { StyledCreateAndEditRoute, StyledRowBlock } from './styles'
 import FormItem from '../FormItem/FormItem'
 import Input from '@/ui/Input/Input'
 import Button from '@/ui/Button/Button'
-import SelectDay from '@/ui/SelectDay/SelectDay'
 import ImageSelect from '@/ui/ImageSelect/ImageSelect'
 import { useRoute } from '@/hooks/useRoute'
 import checkAllPropertiesFilled from '@/utils/checkAllPropertiesFilled'
 import notification from '@/utils/notification'
-// import checkAllPropertiesFilled from '../../utils'
+
 interface CreateAndEditRouteProps {
     route?: IRoute
     closeHandler: () => void
 }
 
 const CreateAndEditRoute: FC<CreateAndEditRouteProps> = ({ route, closeHandler }) => {
-    const { routes, createOrEdidRoute } = useRoute()
+    const { routes, createOrEditRoute } = useRoute()
+
     const initalValues: IRoute = {
         city_from: '',
         city_to: '',
-        days: [],
+        // days: [],
         distance: '',
         duration: '',
         image: '',
@@ -30,25 +30,46 @@ const CreateAndEditRoute: FC<CreateAndEditRouteProps> = ({ route, closeHandler }
         search_keys: ''
     }
     const [values, setValues] = useState<IRoute>(initalValues)
+
+    useEffect(() => {
+        if (route?.name) {
+            setValues(route)
+        }
+    }, [route, setValues])
+
     const [activeDays, setActiveDays] = useState<IDay[]>([])
     const handleChangeValue = useCallback((key: string, value: string | string[]) => {
         setValues({
             ...values, [key]: value
         })
-    }, [values])
+    }, [values, setValues])
 
     const handleClick = useCallback((values: IRoute) => {
-        createOrEdidRoute(values)
-        closeHandler()
-    }, [routes, handleChangeValue, closeHandler])
+        //@ts-ignore
+        const allPropertiesFilled = checkAllPropertiesFilled(values)
+        const routeIsAvailable = routes.some((findRoute) => findRoute.id === values.id)
+        if (allPropertiesFilled) {
+            createOrEditRoute(values, values.id)
+            notification(`Маршрут ${routeIsAvailable ? 'изменен' : 'создан'}!`, 'Успешно!', 'success')
+            closeHandler()
+            setValues({
+                city_from: '',
+                city_to: '',
+                // days: [],
+                distance: '',
+                duration: '',
+                image: '',
+                name: '',
+                price_amd: '',
+                price_rub: '',
+                search_keys: ''
+            })
+            setActiveDays([])
+        } else {
+            notification('Все поля должны быть заполнены!', 'Ошибка!', 'danger')
+        }
+    }, [routes, handleChangeValue, closeHandler, setValues])
 
-    useEffect(() => {
-        route?.name && setValues(route)
-    }, [route])
-
-    useEffect(() => {
-        handleChangeValue('days', activeDays.map(({ key }) => key))
-    }, [activeDays])
     return (
         <StyledCreateAndEditRoute>
             <StyledRowBlock>
@@ -80,6 +101,7 @@ const CreateAndEditRoute: FC<CreateAndEditRouteProps> = ({ route, closeHandler }
                 />
                 <FormItem
                     body={<Input
+                        value={values.price_amd}
                         onChange={(e) => handleChangeValue('price_amd', e.target.value)}
                         placeholder='25000'
                     />}
@@ -113,10 +135,10 @@ const CreateAndEditRoute: FC<CreateAndEditRouteProps> = ({ route, closeHandler }
                     />}
                     title='Время в пути'
                 />
-                <FormItem
+                {/* <FormItem
                     body={<SelectDay activeDays={activeDays} setActiveDays={setActiveDays} />}
                     title='Дни недели'
-                />
+                /> */}
             </StyledRowBlock>
             <FormItem
                 body={<Input
@@ -130,10 +152,11 @@ const CreateAndEditRoute: FC<CreateAndEditRouteProps> = ({ route, closeHandler }
                 <FormItem
                     body={<ImageSelect
                         onChange={(imageUrl: string) => handleChangeValue('image', imageUrl)}
+                        defaultUrl={values.image}
                     />}
                     title='Изображение'
                 />
-                <Button label='Создать' size='medium' onClick={() => handleClick(values)} theme='primary' />
+                <Button label={route?.name ? 'Изменить' : 'Создать'} size='medium' onClick={() => handleClick(values)} theme='primary' />
             </StyledRowBlock>
         </StyledCreateAndEditRoute>
     )
